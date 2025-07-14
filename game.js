@@ -159,11 +159,21 @@ class TechuGame {
         database.ref(`rooms/${this.currentRoom}`).on('value', (snapshot) => {
             this.gameState = snapshot.val();
             if (this.gameState) {
+                console.log('Game state updated:', this.gameState);
+                
+                // Verify board structure
+                if (!this.gameState.board || !Array.isArray(this.gameState.board)) {
+                    console.error('Invalid board structure:', this.gameState.board);
+                    return;
+                }
+                
                 this.updateUI();
                 
                 if (this.gameState.phase === 'setup' && this.gameState.players.player1 && this.gameState.players.player2) {
                     this.setupGame();
                 }
+            } else {
+                console.warn('No game state found for room:', this.currentRoom);
             }
         });
     }
@@ -204,10 +214,23 @@ class TechuGame {
     }
 
     updateBoard() {
+        // Check if gameState and board exist
+        if (!this.gameState || !this.gameState.board) {
+            console.warn('Game state or board not initialized');
+            return;
+        }
+        
         const cells = document.querySelectorAll('.cell');
         cells.forEach(cell => {
             const row = parseInt(cell.dataset.row);
             const col = parseInt(cell.dataset.col);
+            
+            // Check if board row exists
+            if (!this.gameState.board[row]) {
+                console.warn(`Board row ${row} does not exist`);
+                return;
+            }
+            
             const boardCell = this.gameState.board[row][col];
             
             cell.innerHTML = '';
@@ -236,7 +259,17 @@ class TechuGame {
     }
 
     updateHand() {
+        // Check if gameState exists
+        if (!this.gameState || !this.gameState.players) {
+            console.warn('Game state or players not initialized');
+            return;
+        }
+        
         const handElement = document.getElementById('playerHand');
+        if (!handElement) {
+            console.error('Player hand element not found');
+            return;
+        }
         handElement.innerHTML = '';
         
         const playerKey = `player${this.playerNumber}`;
@@ -274,8 +307,17 @@ class TechuGame {
     }
 
     updateGameStatus() {
+        if (!this.gameState) {
+            return;
+        }
+        
         const statusElement = document.getElementById('gameStatus');
         const turnIndicator = document.getElementById('turnIndicator');
+        
+        if (!statusElement || !turnIndicator) {
+            console.error('Status elements not found');
+            return;
+        }
         
         if (this.gameState.winner) {
             statusElement.textContent = `Player ${this.gameState.winner} wins!`;
@@ -291,9 +333,18 @@ class TechuGame {
     }
 
     updateControls() {
+        if (!this.gameState) {
+            return;
+        }
+        
         const drawBtn = document.getElementById('drawCardBtn');
         const discardBtn = document.getElementById('discardBtn');
         const endTurnBtn = document.getElementById('endTurnBtn');
+        
+        if (!drawBtn || !discardBtn || !endTurnBtn) {
+            console.error('Control buttons not found');
+            return;
+        }
         
         const isMyTurn = this.isMyTurn();
         const playerKey = `player${this.playerNumber}`;
