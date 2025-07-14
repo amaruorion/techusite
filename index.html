@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techu - Online Card Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <div id="menu" class="screen">
+            <h1>Techu</h1>
+            <div class="menu-buttons">
+                <button id="createRoomBtn">Create Room</button>
+                <button id="joinRoomBtn">Join Room</button>
+            </div>
+            <div id="roomInput" style="display: none;">
+                <input type="text" id="roomCode" placeholder="Enter room code">
+                <button id="confirmJoinBtn">Join</button>
+            </div>
+        </div>
+
+        <div id="game" class="screen" style="display: none;">
+            <div class="game-info">
+                <div id="playerInfo">
+                    <span id="playerName"></span>
+                    <span id="turnIndicator"></span>
+                </div>
+                <div id="gameStatus"></div>
+                <div id="roomCodeDisplay"></div>
+            </div>
+
+            <div class="game-container">
+                <div id="opponentHand" class="hand opponent-hand">
+                    <div class="card-back"></div>
+                    <div class="card-back"></div>
+                    <div class="card-back"></div>
+                </div>
+
+                <div id="gameBoard" class="game-board">
+                    <!-- 5x5 grid will be generated here -->
+                </div>
+
+                <div id="playerHand" class="hand player-hand">
+                    <!-- Player's cards will be displayed here -->
+                </div>
+
+                <div class="game-controls">
+                    <button id="drawCardBtn">Draw Card</button>
+                    <button id="discardBtn">Discard Selected</button>
+                    <button id="endTurnBtn">End Turn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="config.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
