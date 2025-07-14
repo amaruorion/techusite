@@ -602,4 +602,24 @@ class TechuGame {
 }
 
 // Initialize game when page loads
-const game = new TechuGame();
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if Firebase is loaded
+    if (typeof firebase === 'undefined') {
+        console.error('Firebase is not loaded');
+        alert('Firebase failed to load. Please check your internet connection and refresh the page.');
+        return;
+    }
+    
+    // Check if database is available
+    if (typeof database === 'undefined') {
+        console.error('Firebase database is not initialized');
+        alert('Firebase database failed to initialize. Please refresh the page.');
+        return;
+    }
+    
+    // Initialize the game
+    const game = new TechuGame();
+    
+    // Make game available globally for debugging
+    window.game = game;
+});
